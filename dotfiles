@@ -1,5 +1,36 @@
 #!/bin/bash 
 
-echo This is Daser2's Dotfiles script!
+# imports 
+. $(dirname "$0")/import.sh 2>> /dev/null 
+. $(dirname "$0")/tools/import.sh 2>> /dev/null 
 
+import log 
+import pkgi
+import ask 
+
+# HERE DOTFILES STARTS
+
+echo "This is Daser2's Dotfiles script!"
+
+askY "Are you ready to start?"
+if [ $? -ne 1 ]
+then
+    log i "I... understand..."
+    log i "Terminated."
+    exit 0 
+fi 
+
+log i "Installing basic packages..."
+
+pkgi git curl wget
+
+aski(){
+    askY "Do you want to install $1 support?"
+    if [ $? -eq 1 ]
+    then
+        pkgi $2 
+    fi 
+}
+
+aski "Lua" "lua luajit"
 
