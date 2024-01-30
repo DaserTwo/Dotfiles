@@ -62,3 +62,27 @@ askN(){
     esac 
 }
 
+choose(){
+    local ps3=$PS3
+    PS3=$1
+    local ix=0
+    shift
+    select option in "$@"
+    do
+        ix=0
+	for e in "$@"
+	do
+            echo "\"$option\"=\"$e\""
+	    if [ $option = $e ]
+	    then
+                PS3=$ps3
+                return $ix
+	    fi
+	    ix=$(($ix+1))
+        done
+        echo $option is not an option
+    done
+    PS3=$ps3
+    return $ix
+}
+

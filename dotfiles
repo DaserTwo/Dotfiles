@@ -7,6 +7,7 @@
 import log 
 import pkgi
 import ask 
+import conf
 
 # HERE DOTFILES STARTS
 
@@ -21,16 +22,65 @@ then
 fi 
 
 log i "Installing basic packages..."
+pkgi git curl wget build make ninja cmake
 
-pkgi git curl wget
+pkginit
 
-aski(){
-    askY "Do you want to install $1 support?"
-    if [ $? -eq 1 ]
-    then
-        pkgi $2 
-    fi 
-}
+log i "Installing languages..."
+pkgi gcc llvm lld clang bear lua luajit perl python jdk-openjdk kotlin node npm rust ghc nasm yasm fasm php dmd gfortran mono erlang elixir racket clisp
 
-aski "Lua" "lua luajit"
+log i "Installing editors..."
+pkgi vim neovim
+
+log i "Copying vim configuration..."
+conf vimrc .vimrc
+
+log i "Copying bash configuration..."
+conf bashrc .bashrc
+
+log i "Instaling X11"
+pkgi xorg xorg-xinit
+
+choose "Choose env: " qtile i3
+case "$?" in 
+	0)
+		log i "Installing QTile..."
+		pkgi qtile
+
+		log i "Copying X11 configuration..."
+		conf xinitrc.qtile .xinitrc
+
+		log i "Copying QTile configuration..."
+		dotconf qtile qtile setup.py
+		;;
+	1)
+		log i "Installing I3..."
+		pkgi i3-wm i3status i3blocks
+		
+		log i "Copying X11 configuration..."
+		conf xinitrc.i3 .xinitrc
+
+		log i "Copying I3 configuration..."
+		dotconf i3 i3 setup
+		;;
+	*)
+		log e "Unknown env."
+		exit 1
+		;;
+esac
+
+log i "Installing Alacritty..."
+pkgi alacritty
+
+log i "Installing Thunar..."
+pkgi thunar gvfs
+
+librewolf --version
+if [ $? -ne 0 ]
+then
+	log i "Installing Librewolf..."
+	pkgi librewolf
+else
+	log w "Librewolf already installed!"
+fi
 
