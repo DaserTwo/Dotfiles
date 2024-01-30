@@ -61,7 +61,7 @@ case "$?" in
 		conf xinitrc.i3 .xinitrc
 
 		log i "Copying I3 configuration..."
-		dotconf i3 i3 setup
+		dotconf i3 i3 config
 		;;
 	*)
 		log e "Unknown env."
