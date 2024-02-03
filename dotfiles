@@ -38,6 +38,9 @@ conf vimrc .vimrc
 log i "Copying bash configuration..."
 conf bashrc .bashrc
 
+log i "Installing FFMPEG..."
+pkgi ffmpeg
+
 log i "Instaling X11"
 pkgi xorg xorg-xinit
 
@@ -73,7 +76,10 @@ log i "Installing Alacritty..."
 pkgi alacritty
 
 log i "Installing Thunar..."
-pkgi thunar gvfs
+pkgi thunar thunar-archive-plugin gvfs
+
+log i "Installing Rofi..."
+pkgi rofi
 
 librewolf --version
 if [ $? -ne 0 ]
