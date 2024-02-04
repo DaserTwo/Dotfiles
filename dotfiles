@@ -38,9 +38,6 @@ conf vimrc .vimrc
 log i "Copying bash configuration..."
 conf bashrc .bashrc
 
-log i "Installing utils..."
-pkgi ffmpeg feh
-
 log i "Instaling X11"
 pkgi xorg xorg-xinit
 
@@ -65,9 +62,6 @@ case "$?" in
 
 		log i "Copying I3 configuration..."
 		dotconf i3 i3 config
-		
-		log i "Installing Nitrogen..."
-		pkgi nitrogen
 		;;
 	*)
 		log e "Unknown env."
@@ -75,14 +69,8 @@ case "$?" in
 		;;
 esac
 
-log i "Installing Alacritty..."
-pkgi alacritty
-
-log i "Installing Thunar..."
-pkgi thunar thunar-archive-plugin gvfs
-
-log i "Installing Rofi..."
-pkgi rofi
+log i "Installing utils..."
+pkgi ffmpeg feh alacritty thunar thunar-archive-plugin gvfs rofi
 
 librewolf --version
 if [ $? -ne 0 ]
