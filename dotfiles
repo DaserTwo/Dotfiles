@@ -38,8 +38,8 @@ conf vimrc .vimrc
 log i "Copying bash configuration..."
 conf bashrc .bashrc
 
-log i "Installing FFMPEG..."
-pkgi ffmpeg
+log i "Installing utils..."
+pkgi ffmpeg feh
 
 log i "Instaling X11"
 pkgi xorg xorg-xinit
@@ -65,6 +65,9 @@ case "$?" in
 
 		log i "Copying I3 configuration..."
 		dotconf i3 i3 config
+		
+		log i "Installing Nitrogen..."
+		pkgi nitrogen
 		;;
 	*)
 		log e "Unknown env."
@@ -89,4 +92,8 @@ then
 else
 	log w "Librewolf already installed!"
 fi
+
+log i "Copying wallpapers..."
+mkdir ~/Pictures ~/Pictures/wallpapers
+cp $(dirname "$0")/assets/wallpaper.png ~/Pictures/wallpapers
 
