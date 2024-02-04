@@ -195,3 +195,7 @@ bindsym $mod+r mode "resize"
 bar {
         status_command i3status
 }
+
+# Display wallpaper
+exec_always feh --bg-fill --randomize ~/Pictures/wallpapers/*
+
