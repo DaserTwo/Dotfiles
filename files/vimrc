@@ -70,6 +70,9 @@ set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx,*.o
 " Set encoding
 set encoding=UTF-8
 
+" Something
+filetype plugin indent on
+
 " Better NERDTree
 autocmd VimEnter * if !argc() | Explore | endif
 autocmd VimEnter * if isdirectory(expand('<afile>')) | Explore | endif
@@ -86,7 +89,7 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'sheerun/vim-polyglot'
     Plug 'LunarWatcher/auto-pairs'
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'mg979/vim-visual-multi', {'branch': 'master'}
     Plug 'dense-analysis/ale'
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
@@ -99,57 +102,12 @@ call plug#begin('~/.vim/plugged')
 
 call plug#end()
 
-" Auto-Pairs:
-
-let g:AutoPairsShortcutToggle = '<C-P>'
-
-" COC:
-
-inoremap <silent><expr> <Down> coc#pum#visible() ? coc#pum#next(0) : "\<Down>"
-inoremap <expr><Up> coc#pum#visible() ? coc#pum#prev(0) : "\<Up>"
-
-" Make <CR> to accept selected completion item or notify coc.nvim to format
-" <C-g>u breaks current undo, please make your own choice
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
-" Use K to show documentation in preview window
-nnoremap <silent> K :call ShowDocumentation()<CR>
-
-function! ShowDocumentation()
-  if CocAction('hasProvider', 'hover')
-    call CocActionAsync('doHover')
-  else
-    call feedkeys('K', 'in')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Add `:CocFormat` command to format current buffer
-command! -nargs=0 CocFormat :call CocActionAsync('format')
-
-" Add `:CocFold` command to fold current buffer
-command! -nargs=? CocFold :call     CocAction('fold', <f-args>)
-
-" Add `:CocOrganize` command for organize imports of the current buffer
-command! -nargs=0 CocOrganize   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
-
 " ALE:
 
+let g:ale_fixers = {'cpp':['clangd-16','gcc'],'c':['clangd-16','gcc'],'fortran':['gcc'],'haskel':['ghc'],'lua':['luac'],'nasm':['nasm'],'asm':['gcc'],'zig':['zig fmt']}
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_completion_autoimport = 0
 let g:ale_completion_enabled = 1
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
@@ -177,10 +135,22 @@ nnoremap tt :Tagbar<CR>
 command! W :wa 
 command! Q :q
 
-nnoremap <C-H> <C-W>h
-nnoremap <C-J> <C-W>j
-nnoremap <C-K> <C-W>k
-nnoremap <C-L> <C-W>l
+" Windows
+map <C-H> <C-W>h
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-L> <C-W>l
+
+" Tabs
+map <leader>tn :tabnew .<cr>
+
+" insert mode yank, put, delete and undo
+imap <C-Y><C-Y> <C-o>yy
+imap <C-D><C-D> <C-o>dd
+imap <C-Y>w     <C-o>yw
+imap <C-D>w     <C-o>dw
+imap <C-P>      <C-o>p
+imap <C-U>      <C-o>u
 
 " Other: 
 
@@ -237,3 +207,4 @@ if has('gui_running')
         \endif<CR>
 
 endif
+
