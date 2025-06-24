@@ -22,3 +22,35 @@ apply vimrc
 apply_config i3
 apply_config i3blocks
 apply_config sway
+
+sudo pacman -Syyu
+sudo pacman -S - < ./packages.list
+
+yayinit(){
+	yay --version
+	if [ $? -eq 0 ]
+	then
+		log i "Yay already installed"
+		return
+	fi
+	log i "Instaling yay..."
+	pushd "${XDG_DATA_HOME:-${HOME}/.local/share}/yay"
+	git clone https://aur.archlinux.org/yay.git
+	if [ $? -ne 0 ]
+	then
+		log e "Failed to clone yay..."
+		exit 1
+	fi
+	cd yay
+	makepkg -si
+	if [ $? -ne 0 ]
+	then
+		log e "Failed to install yay..."
+		exit 2
+	fi
+	popd
+}
+
+yayinit
+
+yay -S - < ./packages_yay.list
