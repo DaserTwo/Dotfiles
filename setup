@@ -1,0 +1,24 @@
+#!/bin/bash
+
+apply(){
+	if [ -f ~/.$1 ]; then
+		mv ~/.$1 ~/.$1.old
+	fi
+	cp ./assets/$1 ~/.$1
+}
+
+apply_config(){
+	if [ -d ~/.config/$1 ]; then
+		mv ~/.config/$1 ~/.config/$1.old
+	fi
+	cp ./assets/$1 ~/.config -r
+}
+
+apply bashrc
+apply zshrc
+apply p10k
+apply vimrc
+
+apply_config i3
+apply_config i3blocks
+apply_config sway

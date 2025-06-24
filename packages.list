@@ -3,13 +3,10 @@ a2jmidid
 abiword
 acpi
 allure
-alpaca-ai
 alsa-utils
 amd-ucode
-arc-gtk-theme
 arduino-ide
 awesome
-awesome-themes-git
 base
 base-devel
 bear
@@ -28,13 +25,10 @@ c3c
 clang
 d2
 discord
-displaylink
-displaylink-connect
 dmenu
 dotnet-sdk
 dzen2
 efibootmgr
-evdi-git
 evolution
 feh
 freepats-general-midi
@@ -75,7 +69,6 @@ kshisen
 languagetool
 libpulse
 libreoffice-fresh
-librewolf-bin
 libva-intel-driver
 lightdm
 lightdm-slick-greeter
@@ -96,7 +89,6 @@ nasm
 nemo
 nemo-fileroller
 nemo-terminal
-neofetch
 neovim-qt
 net-tools
 network-manager-applet
@@ -107,7 +99,6 @@ nodejs
 npm
 ocaml
 odin
-opentabletdriver
 pandoc-cli
 papirus-icon-theme
 pipewire
@@ -143,7 +134,6 @@ torbrowser-launcher
 ttf-dejavu
 ttf-jetbrains-mono-nerd
 unzip
-video-downloader
 vim
 vlc
 vulkan-intel
@@ -156,13 +146,10 @@ xdg-utils
 xf86-video-amdgpu
 xf86-video-ati
 xf86-video-nouveau
-xf86-video-vmware
 xorg-server
 xorg-xgamma
 xorg-xinit
 xorg-xrandr
-yay
-yay-debug
 zettlr
 zig
 zip
