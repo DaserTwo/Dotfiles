@@ -1,0 +1,11 @@
+#!/bin/bash
+
+data=`nmcli device show wlan0`
+
+state=`echo "$data" | awk '/GENERAL.STATE:/ {print $2}'`
+if [ $state -eq 100 ]
+then
+	echo '<span color="#0f0">' `echo "$data" | awk '/IP6.ADDRESS/ {print $2}' | awk -F '/' '{print $1}'` `echo "$data" | awk '/IP4.ADDRESS/ {print $2}' | awk -F '/' '{print $1}'` '</span>'
+fi
+
+

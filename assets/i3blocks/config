@@ -1,0 +1,68 @@
+# i3blocks configuration file
+#
+# The i3blocks man page describes the usage of the binary,
+# and its website describes the configuration:
+#
+#     https://vivien.github.io/i3blocks
+
+
+# Global properties
+separator=true
+separator_block_width=15
+
+# [public-ip]
+# command=wget -qO - icanhazip.com
+# interval=once
+# color=#00ff00
+
+# [documentation]
+# full_text=Documentation
+# website=https://vivien.github.io/i3blocks
+# command=xdg-open "$website"
+# color=#f12711
+
+[ip]
+command=./$SCRIPT_DIR/ip
+markup=pango
+interval=once
+
+[wifi]
+command=./$SCRIPT_DIR/wifi
+markup=pango
+interval=30
+
+[volume]
+command=./$SCRIPT_DIR/volume
+LABEL=♪ 
+interval=once
+signal=10
+#STEP=5%
+#MIXER=[determined automatically]
+#SCONTROL=[determined automatically]
+#NATURAL_MAPPING=0
+
+[batterybar]
+command=./$SCRIPT_DIR/batterybar
+label=⚡ 
+interval=5
+markup=pango
+min_width=⚡ ■■■■■
+
+[time]
+command=date '+%Y-%m-%d %H:%M:%S'
+interval=1
+
+[shutdown_menu]
+full_text=Quit
+command=./$SCRIPT_DIR/shutdown_menu
+#FG_COLOR=#bbbbbb
+#BG_COLOR=#111111
+#HLFG_COLOR=#111111
+#HLBG_COLOR=#bbbbbb
+#BORDER_COLOR=#222222
+#ZENITY_TITLE=Menu
+#ZENITY_TEXT=Action:
+#ZENITY_OPTIONS=--column= --hide-header
+#ENABLE_CONFIRMATIONS=true (must be true or false)
+LAUNCHER=zenity
+#LOCKSCRIPT=i3lock --color=${BG_COLOR#"#"}

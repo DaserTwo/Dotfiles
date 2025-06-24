@@ -70,12 +70,34 @@ set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx,*.o
 " Set encoding
 set encoding=UTF-8
 
-" Something
-filetype plugin indent on
+" Use system clipboard
+set clipboard+=unnamedplus
 
 " Better NERDTree
 autocmd VimEnter * if !argc() | Explore | endif
 autocmd VimEnter * if isdirectory(expand('<afile>')) | Explore | endif
+
+" Mappings:
+
+nnoremap ff :20Lex<CR>
+nnoremap tn :Tex .<CR>
+
+command! W :wa 
+command! Q :q
+
+" Windows
+map <C-H> <C-W>h
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-L> <C-W>l
+
+" insert mode yank, put, delete and undo
+imap <C-Y><C-Y> <C-o>yy
+imap <C-D><C-D> <C-o>dd
+imap <C-Y>w     <C-o>yw
+imap <C-D>w     <C-o>dw
+imap <C-P>      <C-o>p
+imap <C-U>      <C-o>u
 
 " PLUGINS: 
 
@@ -123,10 +145,9 @@ call plug#begin('~/.vim/plugged')
     " ordered by their scope. This means that for example methods in C++ are displayed under the class they are defined in.
     Plug 'preservim/tagbar'
 
-    " Use (neo)vim terminal in the floating/popup window.
-    Plug 'voldikss/vim-floaterm'
-
-    Plug 'dyng/ctrlsf.vim'
+    " Markdown
+    Plug 'preservim/vim-markdown'
+    Plug 'iamcco/markdown-preview.nvim'
 
     " Themes
     Plug 'ajmwagar/vim-deus'
@@ -155,47 +176,10 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline#extensions#ale#enabled = 1
 
-" FloatTerm:
-
-let g:floaterm_keymap_new    = '<C-a>n'
-let g:floaterm_keymap_prev   = '<C-a>h'
-let g:floaterm_keymap_next   = '<C-a>l'
-let g:floaterm_keymap_toggle = '<C-a>t'
-let g:floaterm_keymap_kill   = '<C-a>k'
-
-let g:ctrlsf_backend = 'ack'
-
 " Theme:
 
 colorscheme onedark
 let g:airline_theme = 'onedark'
-
-" Mappings:
-
-nnoremap ff :20Lex<CR>
-nnoremap fz :FloatermNew fzf<CR>
-nnoremap tt :Tagbar<CR>
-nnoremap tn :Tex .<CR>
-nnoremap TT :FloatermNew<CR>
-nnoremap Tp :FloatermNew python3<CR>
-nnoremap Tl :FloatermNew lua<CR>
-
-command! W :wa 
-command! Q :q
-
-" Windows
-map <C-H> <C-W>h
-map <C-J> <C-W>j
-map <C-K> <C-W>k
-map <C-L> <C-W>l
-
-" insert mode yank, put, delete and undo
-imap <C-Y><C-Y> <C-o>yy
-imap <C-D><C-D> <C-o>dd
-imap <C-Y>w     <C-o>yw
-imap <C-D>w     <C-o>dw
-imap <C-P>      <C-o>p
-imap <C-U>      <C-o>u
 
 " Other: 
 
@@ -252,3 +236,4 @@ if has('gui_running')
         \endif<CR>
 
 endif
+

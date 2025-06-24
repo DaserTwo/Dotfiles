@@ -1,0 +1,96 @@
+#!/bin/bash
+
+# CONFIG
+
+# Colors: FG (foreground), BG (background), HL (highlighted)
+FG_COLOR="${FG_COLOR:-#bbbbbb}"
+BG_COLOR="${BG_COLOR:-#111111}"
+HLFG_COLOR="${HLFG_COLOR:-#111111}"
+HLBG_COLOR="${HLBG_COLOR:-#bbbbbb}"
+BORDER_COLOR="${BORDER_COLOR:-#222222}"
+
+# Options not related to colors
+ROFI_TEXT="${ROFI_TEXT:-Menu:}"
+ROFI_OPTIONS=(${ROFI_OPTIONS:--theme-str 'window {width: 11%; border: 2;} listview {scrollbar: false;}' -location 3})
+
+# Zenity options
+ZENITY_TITLE="${ZENITY_TITLE:-Menu}"
+ZENITY_TEXT="${ZENITY_TEXT:-Action:}"
+ZENITY_OPTIONS=(${ZENITY_OPTIONS:---column= --hide-header})
+
+# END
+
+# Preferred launcher if both are available
+preferred_launcher="${LAUNCHER:-rofi}"
+
+# Check whether a command exists
+function command_exists() {
+  command -v "$1" &> /dev/null 2>&1
+}
+
+# Check whether the user-defined launcher is valid
+launcher_list=(rofi zenity)
+function check_launcher() {
+  if [[ ! "${launcher_list[@]}" =~ (^|[[:space:]])"$1"($|[[:space:]]) ]]; then
+    echo "Supported launchers: ${launcher_list[*]}"
+    exit 1
+  else
+    # Get array with unique elements and preferred launcher first
+    # Note: uniq expects a sorted list, so we cannot use it
+    i=1
+    launcher_list=($(for l in "$1" "${launcher_list[@]}"; do printf "%i %s\n" "$i" "$l"; let i+=1; done \
+      | sort -uk2 | sort -nk1 | cut -d' ' -f2- | tr '\n' ' '))
+  fi
+}
+
+# menu defined as an associative array
+typeset -A menu
+
+# Menu with keys/commands
+menu=(
+  [English US]="us"
+  [English UK]="gb"
+  [Polish]="pl"
+  [Norwegian]="no"
+  [Spanish]="es"
+  [Russian]="ru"
+  [Cancel]=""
+)
+menu_nrows=${#menu[@]}
+
+launcher_exe=""
+launcher_options=""
+rofi_colors=""
+
+function prepare_launcher() {
+  if [[ "$1" == "rofi" ]]; then
+    rofi_colors=(-bc "${BORDER_COLOR}" -bg "${BG_COLOR}" -fg "${FG_COLOR}" \
+        -hlfg "${HLFG_COLOR}" -hlbg "${HLBG_COLOR}")
+    launcher_exe="rofi"
+    launcher_options=(-dmenu -i -lines "${menu_nrows}" -p "${ROFI_TEXT}" \
+        "${rofi_colors[@]}" "${ROFI_OPTIONS[@]}")
+  elif [[ "$1" == "zenity" ]]; then
+    launcher_exe="zenity"
+    launcher_options=(--list --title="${ZENITY_TITLE}" --text="${ZENITY_TEXT}" \
+        "${ZENITY_OPTIONS[@]}")
+  fi
+}
+
+for l in "${launcher_list[@]}"; do
+  if command_exists "${l}" ; then
+    prepare_launcher "${l}"
+    break
+  fi
+done
+
+# No launcher available
+if [[ -z "${launcher_exe}" ]]; then
+  exit 1
+fi
+
+launcher=(${launcher_exe} "${launcher_options[@]}")
+selection="$(printf '%s\n' "${!menu[@]}" | sort | "${launcher[@]}")"
+
+if [[ $? -eq 0 && ! -z ${selection} ]]; then
+  exec setxkbmap ${menu[${selection}]}
+fi

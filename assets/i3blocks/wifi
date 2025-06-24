@@ -1,0 +1,12 @@
+#!/bin/bash
+
+data=`nmcli device show wlan0`
+
+#echo "$data" | awk '/GENERAL.DEVICE:/ {print $2}' 
+state=`echo "$data" | awk '/GENERAL.STATE:/ {print $2}'`
+if [ $state -ne 100 ]
+then
+	echo '<span color="red">WiFi</span>'
+else
+	echo '<span color="green">' `echo "$data" | awk '/GENERAL.CONNECTION:/ {print $2}'` '</span>'
+fi
